@@ -1,0 +1,80 @@
+{% extends 'post/index.html' %}
+{% block title%} search result {% endblock %}
+{% block content %}
+<a  href="{{request.META.HTTP_REFERER|escape}}">Back</a>
+  <div class="column is-two-thirds">
+    <div class="block">
+      <div class="card">
+        <div class="card-content">
+          <form method="post" class='flex-form-center'>
+            {% csrf_token %}
+            <div class="field has-addons is-vcentered ">
+              <div class="control">
+                <input class="input" name='username' type="text" placeholder="search user">
+              </div>
+              <div class="control">
+                <button type='submit' name='search' class="button is-info">
+                  Search
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    {% if search_users %}
+    {% for user in search_users %}
+    <div class="block">
+      <div class="card">
+        <a href="{% url 'signup:profile' user.profile.id %}">
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-64x64">
+              {% if user.profile.image %}
+              <img src="{{user.profile.image.url}}">
+              {% else %}
+              <img src="https://bulma.io/images/placeholders/128x128.png">
+              {% endif %}
+              </figure>
+            </div>
+            <div class="media-right">
+              <p class='title is-4'>{{user.profile.name}}</p>
+              <p class="subtitle is-6">@{{user.profile.user.username}}</p>
+            </div>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% comment %}  {% endcomment %}
+    {% for profile in profile_list %}
+    <div class="block">
+      <div class="card">
+        <a href="{% url 'signup:profile' profile.id %}">
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-64x64">
+              {% if profile.image %}
+              <img src="{{profile.image.url}}">
+              {% else %}
+              <img src="https://bulma.io/images/placeholders/128x128.png">
+              {% endif %}
+              </figure>
+            </div>
+            <div class="media-right">
+              <p class='title is-4'>{{profile.name}}</p>
+              <p class="subtitle is-6">@{{profile.user.username}}</p>
+            </div>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+    {% endfor%}
+  </div>
+{% endblock  %}

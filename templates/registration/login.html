@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock  %}
+
+{% block content %}
+  <div class="hero-body has-text-centered ">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-one-third">
+          <div class="box">
+            <h2 class="title is-2 has-text-success">登陆</h2>
+            <form method="post">
+              {% csrf_token %}
+              <div class="field">
+                <p class="control has-icons-left has-icons-right">
+                  <input class="input" type="text" placeholder="用户名" name='username' value={{ form.username.value|default_if_none:'' }} >
+                </p> 
+                {% if form.errors.username %}
+                  <div class="has-background-danger">
+                    <strong class='has-text-danger-light'>{{form.errors.username}}</strong>
+                  </div>
+                {% endif %}
+              </div>
+                
+              
+              <div class="field">
+                <p class="control has-icons-left">
+                  <input class="input" type="password" placeholder="密码"
+                  name='password' value={{ form.password.value|default_if_none:'' }}
+                  >
+                </p>
+                {% if form.errors.password %}
+                  <div class="has-background-danger">
+                    <strong class='has-text-danger-light'>{{form.errors.password}}</strong>
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="field">
+                <p class="control">
+                  <button class="button is-success is-fullwidth">
+                    登陆
+                  </button>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control">
+                  没有有帐户？<a class='has-text-link' href="{% url 'signup:signup' %}">注册</a>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock  %}

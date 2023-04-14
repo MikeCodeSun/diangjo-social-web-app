@@ -1,0 +1,118 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}index{% endblock  %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<style>
+  .hover-icon {
+    cursor: pointer;
+  }
+.flex-form-center{
+  display:flex;
+  align-items: center;
+  justify-content: center
+}
+</style>
+<body>
+
+  <nav class="navbar has-shadow " role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item is-size-2" href="{% url 'post:index' %}">
+        微博
+      </a>
+  
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample"   onclick="this.parentNode.nextElementSibling.classList.toggle('is-active')">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  
+    <div id="navbarBasicExample" class="navbar-menu  ">
+      <div class="navbar-start">
+        <a class="navbar-item" href="{% url 'signup:profile_list' %}">
+          全部用户
+        </a>
+        <a class="navbar-item" href="{% url 'signup:search_result' %}">
+          搜索
+        </a>
+      </div>
+      
+      {% comment %}   
+      <form method="post" class='flex-form-center'>
+        {% csrf_token %}
+        <div class="field has-addons is-vcentered ">
+          <div class="control">
+            <input class="input" name='username' type="text" placeholder="search user">
+          </div>
+          <div class="control">
+            <button type='submit' name='search' class="button is-info">
+              Search
+            </button>
+          </div>
+        </div>
+      </form>
+        {% endcomment %}
+  
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary" href='{% url "signup:profile" request.user.profile.id %}'>
+              <strong>{{user.username}}</strong>
+            </a>
+            <a href="{% url 'logout' %}" class="button is-light">
+              登出
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="columns is-centered mt-5">
+    {% block content %}
+    <div class="column pl-5">
+      {% for post in posts %}
+      <article class="message is-info">
+        <div class="message-header">
+          <p>{{post.user.profile.name}}</p>
+          <form method="post">
+            {% csrf_token %}
+            {% if user not in post.liked.all %}
+            <button name='like' value="{{ post.id }}" class="hover-icon icon is-small "><i class="fas fa-heart"></i></button>
+            {% else %}
+            <button name='like' value="{{ post.id }}" class="hover-icon icon is-small has-text-danger"><i class="fas fa-heart"></i></button><span>
+            {% endif %} 
+            {{post.liked.count}}</span>
+          </form>
+            
+          
+        </div>
+        <div class="message-body">
+          {{post.content}}
+        </div>
+      </article>
+      {% endfor %}
+        
+    </div>
+    <div class="column is-one-third">
+      <form  method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button name='newpost' type="submit" class="button is-success is-fullwidth">发送</button>
+      </form>
+    </div>
+    {% endblock  %}
+  </div>
+   
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Sign up{% endblock  %}
+{% block content %}
+<div class="hero-body has-text-centered ">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-one-third">
+        <div class="box">
+          <h2 class="title is-2 has-text-success">注册</h2>
+          <form method="post">
+
+            {% csrf_token %}
+
+            <div class="field">
+              <p class="control has-icons-left has-icons-right">
+                <input class="input" type="text" placeholder="用户名" name='username' value={{ form.username.value|default_if_none:'' }} >
+              </p> 
+              {% if form.errors.username %}
+                <div class="has-background-danger">
+                  <strong class='has-text-danger-light'>{{form.errors.username}}</strong>
+                </div>
+              {% endif %}
+            </div>
+              
+            
+            <div class="field">
+              <p class="control has-icons-left">
+                <input class="input" type="password" placeholder="密码"
+                name='password1' value={{ form.password1.value|default_if_none:'' }}
+                >
+              </p>
+              {% if form.errors.password1 %}
+                <div class="has-background-danger">
+                  <strong class='has-text-danger-light'>{{form.errors.password1}}</strong>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="field">
+              <p class="control has-icons-left">
+                <input class="input" type="password" placeholder="确认密码"
+                name='password2' value={{ form.password2.value|default_if_none:'' }}
+                >
+              </p>
+              {% if form.errors.password2 %}
+                <div class="has-background-danger">
+                  <strong class='has-text-danger-light'>{{form.errors.password2}}</strong>
+                </div>
+              {% endif %}
+            </div>
+            
+            <div class="field">
+              <p class="control">
+                <button class="button is-success is-fullwidth">
+                  注册
+                </button>
+              </p>
+            </div>
+            <div class="field">
+              <p class="control">
+                已经有帐户？<a class='has-text-link' href="{% url 'signup:login' %}">登陆</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock  %}
